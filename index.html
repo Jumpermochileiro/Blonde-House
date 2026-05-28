@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Salão de Beleza e Esmalteria Atalaia</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- FontAwesome (Ícones) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Google Fonts (Playfair Display para títulos, Inter para texto) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+
+    <!-- Configuração de Cores (Borgonha, Rosa e Dourado) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#fdf2f8',
+                            100: '#fce8f0',
+                            200: '#fbcfe0',
+                            300: '#f7a1ba',
+                            400: '#f07a9b',
+                            500: '#e3547d',
+                            600: '#cc3963',
+                            700: '#a82b4f',
+                            800: '#8a2240',
+                            900: '#701a31', // Borgonha escuro
+                            gold: '#d4af37' // Dourado
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .mobile-container {
+            max-width: 480px;
+            margin: 0 auto;
+            background-color: rgba(253, 242, 248, 0.70); /* Fundo rosa bem clarinho e translúcido */
+            backdrop-filter: blur(12px); /* Efeito de vidro fosco */
+            -webkit-backdrop-filter: blur(12px);
+            min-height: 100vh;
+            box-shadow: 0 0 40px rgba(0,0,0,0.1);
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ocultar barra de rolagem mas manter funcionalidade */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+
+        /* Animações das Abas */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-out;
+        }
+        .tab-content.active {
+            display: block;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Seleção de horários */
+        .time-slot.selected {
+            background-color: #d4af37;
+            color: white;
+            border-color: #d4af37;
+            box-shadow: 0 4px 6px -1px rgba(212, 175, 55, 0.3);
+        }
+
+        /* Galeria */
+        .gallery-item {
+            position: relative;
+        }
+        .gallery-item:hover .gallery-img {
+            transform: scale(1.05);
+        }
+
+        /* Classes para o Carrossel */
+        .carousel-container {
+            position: relative;
+            height: 180px; /* Altura fixa para as caixas */
+            width: 100%;
+        }
+        .carousel-slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.8s ease-in-out;
+            pointer-events: none; /* Evitar cliques em slides ocultos */
+        }
+        .carousel-slide.active {
+            opacity: 1;
+            pointer-events: auto;
+            z-index: 10;
+        }
+    </style>
+</head>
+<body class="text-brand-900 antialiased font-sans">
+
+    <!-- Background Image com Blur (Imagem do lavatório) -->
+    <!-- PARA USAR A SUA FOTO: Depois mude este link pelo link da sua foto real -->
+    <div class="fixed inset-[-20px] z-[-2]">
+        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1080&q=80" alt="Background Salão" class="w-full h-full object-cover blur-[6px] opacity-90">
+    </div>
+    <!-- Overlay rosado para garantir leitura e dar o tom da marca -->
+    <div class="fixed inset-0 bg-gradient-to-br from-white/50 to-brand-300/40 z-[-1]"></div>
+
+    <div class="mobile-container pb-24 flex flex-col">
+        
+        <!-- Header / Perfil -->
+        <header class="pt-10 pb-6 px-6 flex flex-col items-center border-b border-brand-200/50 bg-white/30 text-center backdrop-blur-sm">
+            <div class="relative w-28 h-28 mb-4">
+                <img src="https://placehold.co/400x400/fdf2f8/ec4899?text=Atalaia" alt="Atalaia Logo" class="w-full h-full object-cover rounded-full border-4 border-brand-gold/40 shadow-md">
+                <div class="absolute bottom-0 right-0 bg-green-500 w-5 h-5 rounded-full border-2 border-white shadow" title="Online no WhatsApp"></div>
+            </div>
+            <h1 class="text-2xl font-serif font-bold text-brand-900 mb-1 leading-tight">Salão de Beleza e Esmalteria Atalaia</h1>
+            <p class="text-brand-600 font-medium text-sm mb-3">Cabelereiro e Estética</p>
+            <div class="flex items-center text-xs text-brand-800 bg-white/60 px-3 py-1.5 rounded-full max-w-full shadow-sm border border-brand-100">
+                <i class="fas fa-map-marker-alt text-brand-gold mr-2 flex-shrink-0"></i>
+                <span class="truncate">R. José Rosa, 449 - Canasvieiras, Florianópolis</span>
+            </div>
+        </header>
+
+        <nav class="sticky top-0 bg-white/70 backdrop-blur-md z-40 border-b border-brand-200/50 shadow-sm">
+            <ul class="flex w-full text-sm font-medium">
+                <li class="flex-1 text-center">
+                    <button onclick="switchTab('home')" id="tab-home" class="w-full py-4 text-brand-600 border-b-2 border-brand-500 transition-colors">
+                        <i class="fas fa-link block text-lg mb-1"></i> Links
+                    </button>
+                </li>
+                <li class="flex-1 text-center">
+                    <button onclick="switchTab('services')" id="tab-services" class="w-full py-4 text-brand-800/50 hover:text-brand-500 border-b-2 border-transparent transition-colors">
+                        <i class="fas fa-spa block text-lg mb-1"></i> Serviços
+                    </button>
+                </li>
+                <li class="flex-1 text-center">
+                    <button onclick="switchTab('gallery')" id="tab-gallery" class="w-full py-4 text-brand-800/50 hover:text-brand-500 border-b-2 border-transparent transition-colors">
+                        <i class="fas fa-images block text-lg mb-1"></i> Fotos
+                    </button>
+                </li>
+            </ul>
+        </nav>
+
+        <main class="flex-1 px-6 pt-8 pb-12">
+            
+            <!-- ABA: INÍCIO (Links) -->
+            <section id="content-home" class="tab-content active">
+                <div class="space-y-4">
+                    <button onclick="switchTab('booking')" class="w-full group bg-gradient-to-r from-brand-400 to-brand-500 hover:from-brand-500 hover:to-brand-600 text-white p-4 rounded-2xl flex items-center justify-between transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5 border border-brand-400">
+                        <div class="flex items-center">
+                            <div class="bg-white/20 w-10 h-10 rounded-full flex items-center justify-center mr-4 shadow-inner">
+                                <i class="far fa-calendar-check text-xl"></i>
+                            </div>
+                            <div class="text-left">
+                                <h3 class="font-bold text-lg">Agendar Horário</h3>
+                                <p class="text-brand-50 text-xs font-medium">Verifique disponibilidade e reserve</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-chevron-right text-brand-gold opacity-90 group-hover:opacity-100 transition-opacity"></i>
+                    </button>
+
+                    <a href="https://wa.me/5584986448097?text=Ol%C3%A1%2C%20Sal%C3%A3o%20Atalaia!%20Gostaria%20de%20tirar%20algumas%20d%C3%BAvidas." target="_blank" class="w-full bg-white/70 backdrop-blur-sm border border-brand-200/60 hover:border-green-400 p-4 rounded-2xl flex items-center justify-between transition-all shadow-sm hover:shadow group">
+                        <div class="flex items-center">
+                            <div class="bg-green-50/80 w-10 h-10 rounded-full flex items-center justify-center mr-4 border border-green-100 group-hover:bg-green-500 transition-colors">
+                                <i class="fab fa-whatsapp text-green-500 text-xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <div class="text-left">
+                                <h3 class="font-semibold text-brand-900">Dúvidas? Chame no WhatsApp</h3>
+                                <p class="text-brand-700/80 text-xs">Atendimento humano e rápido</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-external-link-alt text-brand-300 group-hover:text-green-500 text-sm"></i>
+                    </a>
+
+                    <a href="https://maps.google.com/?q=R.+José+Rosa,+449+-+Canasvieiras,+Florianópolis+-+SC,+88055-200" target="_blank" class="w-full bg-white/70 backdrop-blur-sm border border-brand-200/60 hover:border-blue-400 p-4 rounded-2xl flex items-center justify-between transition-all shadow-sm hover:shadow group">
+                        <div class="flex items-center">
+                            <div class="bg-blue-50/80 w-10 h-10 rounded-full flex items-center justify-center mr-4 border border-blue-100 group-hover:bg-blue-500 transition-colors">
+                                <i class="fas fa-map-marked-alt text-blue-500 text-xl group-hover:text-white transition-colors"></i>
+                            </div>
+                            <div class="text-left">
+                                <h3 class="font-semibold text-brand-900">Como Chegar</h3>
+                                <p class="text-brand-700/80 text-xs">Abrir no Google Maps</p>
+                            </div>
+                        </div>
+                        <i class="fas fa-external-link-alt text-brand-300 group-hover:text-blue-500 text-sm"></i>
+                    </a>
+                </div>
+
+                <!-- CARROSSEL DINÂMICO -->
+                <div class="mt-8 carousel-container">
+                    
+                    <!-- Slide 1: Horários -->
+                    <div class="carousel-slide active">
+                        <div class="bg-white/50 backdrop-blur-sm p-6 rounded-3xl border border-brand-gold/30 shadow-sm h-full flex flex-col justify-center">
+                            <h3 class="font-serif font-bold text-xl text-brand-900 mb-4 text-center">Horário de Funcionamento</h3>
+                            <ul class="space-y-2 text-sm text-brand-800">
+                                <li class="flex justify-between border-b border-brand-200/50 pb-2"><span>Segunda - Sexta</span> <span class="font-medium">09:00 - 19:00</span></li>
+                                <li class="flex justify-between border-b border-brand-200/50 pb-2"><span>Sábados</span> <span class="font-medium text-brand-gold">09:00 - 17:00</span></li>
+                                <li class="flex justify-between text-brand-500 font-medium"><span>Domingos</span> <span>Fechado</span></li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Slide 2: Frase Autoestima -->
+                    <div class="carousel-slide">
+                        <div class="bg-gradient-to-br from-white/60 to-brand-100/50 backdrop-blur-sm p-6 rounded-3xl border border-brand-gold/30 shadow-sm h-full flex flex-col items-center justify-center text-center relative overflow-hidden">
+                            <i class="fas fa-quote-left text-3xl text-brand-gold/20 absolute top-4 left-4"></i>
+                            <h3 class="font-serif font-bold text-brand-900 text-lg italic mb-2 px-4">"A beleza começa no momento em que você decide ser você mesma."</h3>
+                            <p class="text-xs text-brand-700 font-medium tracking-widest uppercase">— Coco Chanel</p>
+                        </div>
+                    </div>
+
+                    <!-- Slide 3: Dica de Beleza (Unhas) -->
+                    <div class="carousel-slide">
+                        <div class="bg-white/50 backdrop-blur-sm p-6 rounded-3xl border border-brand-gold/30 shadow-sm h-full flex flex-col items-center justify-center text-center">
+                            <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center mb-3 shadow-inner border border-brand-200">
+                                <i class="fas fa-hand-sparkles text-brand-gold text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-brand-900 mb-1">Dica de Ouro</h3>
+                            <p class="text-sm text-brand-800 leading-tight">O segredo de um alongamento duradouro é a hidratação diária das cutículas. Cuide-se! ✨</p>
+                        </div>
+                    </div>
+
+                    <!-- Slide 4: Autocuidado -->
+                    <div class="carousel-slide">
+                        <div class="bg-white/50 backdrop-blur-sm p-6 rounded-3xl border border-brand-gold/30 shadow-sm h-full flex flex-col items-center justify-center text-center">
+                            <div class="w-12 h-12 bg-brand-50 rounded-full flex items-center justify-center mb-3 shadow-inner border border-brand-200">
+                                <i class="fas fa-heart text-brand-500 text-xl"></i>
+                            </div>
+                            <h3 class="font-bold text-brand-900 mb-1">Seu momento sagrado</h3>
+                            <p class="text-sm text-brand-800 leading-tight">A correria do dia a dia é grande, mas não esqueça de reservar um tempo só para realçar a sua melhor versão! 💖</p>
+                        </div>
+                    </div>
+
+                </div>
+                <!-- FIM CARROSSEL DINÂMICO -->
+
+            </section>
+
+            <!-- ABA: SERVIÇOS -->
+            <section id="content-services" class="tab-content">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-serif font-bold text-brand-900">Nossos Serviços</h2>
+                    <p class="text-sm text-brand-700 mt-1">Excelência e cuidado em cada detalhe</p>
+                </div>
+
+                <div class="space-y-4" id="services-list">
+                    <!-- Gerado via JS para facilitar manutenção -->
+                </div>
+                
+                <div class="mt-8 text-center">
+                    <button onclick="switchTab('booking')" class="bg-brand-gold text-white px-6 py-3 rounded-full font-bold text-sm hover:bg-[#c4a132] transition-colors shadow-md border border-[#c4a132]/50">
+                        Agendar um Serviço agora
+                    </button>
+                </div>
+            </section>
+
+            <!-- ABA: GALERIA -->
+            <section id="content-gallery" class="tab-content">
+                <div class="text-center mb-6">
+                    <h2 class="text-2xl font-serif font-bold text-brand-900">Resultados</h2>
+                    <p class="text-sm text-brand-700 mt-1">Conheça um pouco do nosso trabalho</p>
+                </div>
+
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
+                        <span class="font-serif font-bold text-brand-900">Cabelo Loiro</span>
+                    </div>
+                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
+                        <span class="font-serif font-bold text-brand-900">Unhas Gel</span>
+                    </div>
+                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
+                        <span class="font-serif font-bold text-brand-900">Maquiagem</span>
+                    </div>
+                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
+                        <span class="font-serif font-bold text-brand-900">Morena Iluminada</span>
+                    </div>
+                    <div class="col-span-2 rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
+                        <span class="font-serif font-bold text-brand-900 text-lg">Design de Sobrancelhas</span>
+                    </div>
+                </div>
+                
+                <a href="https://www.instagram.com/esmalteriaatalaia" target="_blank" class="mt-6 block text-center text-brand-600 font-bold text-sm hover:text-brand-gold transition-colors hover:underline">
+                    Ver mais no Instagram <i class="fab fa-instagram ml-1"></i>
+                </a>
+            </section>
+
+            <!-- ABA: AGENDAMENTO -->
+            <section id="content-booking" class="tab-content">
+                <div class="flex items-center justify-between mb-6">
+                    <button onclick="switchTab('home')" class="text-brand-700 hover:text-brand-gold font-medium transition-colors"><i class="fas fa-arrow-left"></i> Voltar</button>
+                    <h2 class="text-xl font-serif font-bold text-brand-900">Agendamento</h2>
+                    <div class="w-5"></div> <!-- Spacer -->
+                </div>
+
+                <form id="booking-form" class="space-y-6" onsubmit="handleBooking(event)">
+                    
+                    <!-- Passo 1: Serviço -->
+                    <div>
+                        <label class="block text-sm font-bold text-brand-900 mb-2">1. Escolha o Serviço</label>
+                        <select id="service-select" class="w-full bg-white/80 backdrop-blur-sm border border-brand-200/80 text-brand-900 font-medium text-sm rounded-xl focus:ring-brand-gold focus:border-brand-gold block p-3.5 appearance-none shadow-sm" required onchange="updateBookingSummary()">
+                            <option value="" disabled selected>Selecione um serviço...</option>
+                            <!-- Preenchido via JS -->
+                        </select>
+                    </div>
+
+                    <!-- Passo 2: Data -->
+                    <div>
+                        <label class="block text-sm font-bold text-brand-900 mb-2">2. Escolha a Data</label>
+                        <input type="date" id="date-select" class="w-full bg-white/80 backdrop-blur-sm border border-brand-200/80 text-brand-900 font-medium text-sm rounded-xl focus:ring-brand-gold focus:border-brand-gold block p-3.5 shadow-sm" required onchange="generateTimeSlots()">
+                    </div>
+
+                    <!-- Passo 3: Horário -->
+                    <div id="time-container" style="display: none;">
+                        <label class="block text-sm font-bold text-brand-900 mb-2">3. Escolha o Horário</label>
+                        <div class="grid grid-cols-3 gap-2" id="time-slots">
+                            <!-- Botões de horário gerados via JS -->
+                        </div>
+                        <input type="hidden" id="selected-time" required>
+                    </div>
+
+                    <!-- Passo 4: Dados Pessoais -->
+                    <div id="personal-data-container" style="display: none;" class="space-y-4 pt-2 border-t border-brand-200/50">
+                        <label class="block text-sm font-bold text-brand-900">4. Seus Dados</label>
+                        <input type="text" id="client-name" placeholder="Seu Nome Completo" class="w-full bg-white/80 backdrop-blur-sm border border-brand-200/80 text-brand-900 font-medium text-sm rounded-xl focus:ring-brand-gold focus:border-brand-gold block p-3.5 shadow-sm" required>
+                        <input type="tel" id="client-phone" placeholder="Seu WhatsApp (DDD + Número)" class="w-full bg-white/80 backdrop-blur-sm border border-brand-200/80 text-brand-900 font-medium text-sm rounded-xl focus:ring-brand-gold focus:border-brand-gold block p-3.5 shadow-sm" required>
+                    </div>
+
+                    <!-- Resumo e Política de Pré-Reserva -->
+                    <div id="booking-summary" style="display: none;" class="bg-white/60 backdrop-blur-md p-5 rounded-2xl border border-brand-gold/40 shadow-sm">
+                        <h4 class="font-bold text-brand-900 mb-3 flex items-center"><i class="fas fa-file-invoice-dollar text-brand-gold mr-2 text-lg"></i> Resumo e Políticas</h4>
+                        
+                        <div class="flex justify-between text-sm text-brand-800 mb-1">
+                            <span>Valor total do serviço:</span>
+                            <span id="summary-total" class="font-bold text-brand-900">R$ 0,00</span>
+                        </div>
+                        
+                        <div class="flex justify-between text-sm text-brand-600 mb-4 font-bold border-b border-brand-200/50 pb-3">
+                            <span>Sinal para Pré-reserva (30%):</span>
+                            <span id="summary-deposit" class="text-brand-gold text-base">R$ 0,00</span>
+                        </div>
+
+                        <div class="text-xs text-brand-800/80 space-y-2 leading-relaxed">
+                            <p><i class="fas fa-exclamation-circle text-brand-400"></i> Para evitar faltas e garantir seu horário, cobramos um <b>sinal de 30%</b> do valor do serviço via Pix no momento da confirmação pelo WhatsApp.</p>
+                            <p><i class="fas fa-history text-brand-400"></i> <b>Cancelamentos/Remarcações:</b> Devem ser feitos com no mínimo <b>2 horas de antecedência</b>. Cancelamentos em cima da hora não terão o sinal reembolsado.</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submit-btn" style="display: none;" class="w-full bg-green-500 hover:bg-green-600 text-white font-bold py-4 rounded-xl shadow-lg transition-colors flex items-center justify-center border border-green-400">
+                        <i class="fab fa-whatsapp text-xl mr-2"></i> Confirmar no WhatsApp
+                    </button>
+                </form>
+            </section>
+        </main>
+
+        <!-- Botão flutuante fixo embaixo apenas se não estiver na aba de agendamento -->
+        <div id="floating-book-btn" class="fixed bottom-6 left-0 right-0 px-6 max-w-md mx-auto z-50 transition-transform duration-300 transform translate-y-0">
+            <button onclick="switchTab('booking')" class="w-full bg-gradient-to-r from-brand-gold to-[#b5952f] hover:from-[#c7a435] hover:to-[#a38629] text-white py-4 rounded-full font-bold shadow-[0_10px_20px_rgba(212,175,55,0.3)] flex items-center justify-center space-x-2 border border-[#f0c848]/50 transition-all">
+                <span class="text-lg">Agendar Horário</span>
+                <span class="bg-white text-brand-gold text-[10px] uppercase px-2.5 py-0.5 rounded-full font-extrabold shadow-sm">Rápido</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Dados dos serviços (Simulação de Banco de Dados)
+        const services = [
+            { id: 1, name: "Corte Feminino", price: 90.00, duration: "1h", category: "Cabelo" },
+            { id: 2, name: "Escova Modeladora", price: 60.00, duration: "45min", category: "Cabelo" },
+            { id: 3, name: "Mechas / Morena Iluminada", price: 350.00, duration: "4h", category: "Cabelo" },
+            { id: 4, name: "Manicure Clássica", price: 35.00, duration: "1h", category: "Unhas" },
+            { id: 5, name: "Alongamento em Gel", price: 150.00, duration: "2h", category: "Unhas" },
+            { id: 6, name: "Maquiagem Social", price: 180.00, duration: "1h 30min", category: "Maquiagem" },
+            { id: 7, name: "Design de Sobrancelha", price: 45.00, duration: "40min", category: "Estética" }
+        ];
+
+        const WHATSAPP_NUMBER = "5584986448097";
+
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', () => {
+            renderServices();
+            populateServiceDropdown();
+            startCarousel();
+            
+            // Configurar data mínima para o agendamento (hoje)
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date-select').setAttribute('min', today);
+        });
+
+        // Lógica do Carrossel (Muda a cada 10 segundos)
+        function startCarousel() {
+            const slides = document.querySelectorAll('.carousel-slide');
+            let currentSlide = 0;
+
+            if (slides.length === 0) return;
+
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 10000); // 10 segundos
+        }
+
+        // Lógica de Navegação de Abas
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            
+            document.querySelectorAll('nav button').forEach(btn => {
+                btn.classList.remove('text-brand-600', 'border-brand-500');
+                btn.classList.add('text-brand-800/50', 'border-transparent');
+            });
+
+            document.getElementById(`content-${tabId}`).classList.add('active');
+            
+            const navBtn = document.getElementById(`tab-${tabId}`);
+            if(navBtn) {
+                navBtn.classList.remove('text-brand-800/50', 'border-transparent');
+                navBtn.classList.add('text-brand-600', 'border-brand-500');
+            }
+
+            // Controle do botão flutuante
+            const floatingBtn = document.getElementById('floating-book-btn');
+            if (tabId === 'booking') {
+                floatingBtn.classList.add('translate-y-24');
+            } else {
+                floatingBtn.classList.remove('translate-y-24');
+            }
+        }
+
+        // Renderizar Lista de Serviços na aba Serviços
+        function renderServices() {
+            const container = document.getElementById('services-list');
+            container.innerHTML = ''; 
+            
+            services.forEach(service => {
+                const html = `
+                    <button onclick="bookSpecificService(${service.id})" class="w-full text-left bg-white/70 backdrop-blur-sm p-4 rounded-2xl border border-brand-200/60 flex justify-between items-center shadow-sm hover:shadow-md hover:border-brand-gold/60 transition-all group">
+                        <div>
+                            <h4 class="font-bold text-brand-900 group-hover:text-brand-600 transition-colors">${service.name}</h4>
+                            <p class="text-xs text-brand-700 flex items-center mt-1">
+                                <i class="far fa-clock mr-1 opacity-70"></i> ${service.duration} 
+                                <span class="mx-2 opacity-50">•</span> 
+                                <span class="text-brand-500 font-medium">${service.category}</span>
+                            </p>
+                        </div>
+                        <div class="flex items-center">
+                            <span class="block font-extrabold text-brand-gold mr-3">R$ ${service.price.toFixed(2).replace('.', ',')}</span>
+                            <div class="bg-brand-50 text-brand-500 w-8 h-8 rounded-full flex items-center justify-center group-hover:bg-brand-gold group-hover:text-white transition-colors shadow-sm border border-brand-100 group-hover:border-transparent">
+                                <i class="fas fa-chevron-right text-sm"></i>
+                            </div>
+                        </div>
+                    </button>
+                `;
+                container.innerHTML += html;
+            });
+        }
+
+        // Ir para agendamento com um serviço pré-selecionado
+        function bookSpecificService(serviceId) {
+            switchTab('booking');
+            const select = document.getElementById('service-select');
+            select.value = serviceId;
+            updateBookingSummary();
+        }
+
+        // Preencher o Select do formulário
+        function populateServiceDropdown() {
+            const select = document.getElementById('service-select');
+            services.forEach(service => {
+                const option = document.createElement('option');
+                option.value = service.id;
+                option.textContent = `${service.name} - R$ ${service.price.toFixed(2).replace('.', ',')}`;
+                select.appendChild(option);
+            });
+        }
+
+        // Atualizar Resumo e Pré-reserva
+        function updateBookingSummary() {
+            const select = document.getElementById('service-select');
+            const selectedId = parseInt(select.value);
+            
+            if (!selectedId) return;
+
+            const service = services.find(s => s.id === selectedId);
+            const deposit = service.price * 0.30; // 30% de sinal
+
+            document.getElementById('summary-total').textContent = `R$ ${service.price.toFixed(2).replace('.', ',')}`;
+            document.getElementById('summary-deposit').textContent = `R$ ${deposit.toFixed(2).replace('.', ',')}`;
+            
+            document.getElementById('booking-summary').style.display = 'block';
+            checkFormCompletion();
+        }
+
+        // Simular geração de horários
+        function generateTimeSlots() {
+            const dateInput = document.getElementById('date-select').value;
+            if(!dateInput) return;
+
+            // Converter data para o formato de exibição posterior e verificar se é domingo
+            const dateObj = new Date(dateInput + 'T00:00:00'); // Evita problemas de fuso horário
+            const dayOfWeek = dateObj.getDay();
+
+            if (dayOfWeek === 0) { // Domingo
+                alert("A esmalteria não abre aos domingos. Por favor, escolha outra data.");
+                document.getElementById('date-select').value = '';
+                document.getElementById('time-container').style.display = 'none';
+                return;
+            }
+
+            const container = document.getElementById('time-container');
+            const slotsContainer = document.getElementById('time-slots');
+            container.style.display = 'block';
+            slotsContainer.innerHTML = '';
+            document.getElementById('selected-time').value = '';
+
+            // Horários fictícios - sabados até as 17h, dias de semana até 19h
+            let availableHours = [];
+            if (dayOfWeek === 6) { // Sábado
+                availableHours = ['09:00', '10:00', '11:30', '13:00', '14:30', '15:00'];
+            } else {
+                availableHours = ['09:00', '10:30', '14:00', '15:30', '17:00', '18:00'];
+            }
+
+            availableHours.forEach(time => {
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'time-slot bg-white/60 py-2.5 border border-brand-200/80 rounded-xl text-sm font-bold text-brand-800 transition-all hover:border-brand-gold hover:text-brand-gold hover:shadow-sm focus:outline-none';
+                btn.textContent = time;
+                btn.onclick = () => selectTime(btn, time);
+                slotsContainer.appendChild(btn);
+            });
+
+            checkFormCompletion();
+        }
+
+        // Selecionar um horário
+        function selectTime(buttonEl, timeStr) {
+            document.querySelectorAll('.time-slot').forEach(btn => {
+                btn.classList.remove('selected', 'bg-brand-gold', 'text-white', 'border-brand-gold', 'shadow-md');
+                btn.classList.add('bg-white/60', 'text-brand-800', 'border-brand-200/80');
+            });
+            
+            buttonEl.classList.remove('bg-white/60', 'text-brand-800', 'border-brand-200/80');
+            buttonEl.classList.add('selected', 'bg-brand-gold', 'text-white', 'border-brand-gold', 'shadow-md');
+            document.getElementById('selected-time').value = timeStr;
+            
+            document.getElementById('personal-data-container').style.display = 'block';
+            checkFormCompletion();
+        }
+
+        // Adiciona listeners para os campos de texto
+        document.getElementById('client-name').addEventListener('input', checkFormCompletion);
+        document.getElementById('client-phone').addEventListener('input', checkFormCompletion);
+
+        function checkFormCompletion() {
+            const service = document.getElementById('service-select').value;
+            const date = document.getElementById('date-select').value;
+            const time = document.getElementById('selected-time').value;
+            const name = document.getElementById('client-name').value;
+            const phone = document.getElementById('client-phone').value;
+
+            const submitBtn = document.getElementById('submit-btn');
+            
+            if(service && date && time && name.length > 2 && phone.length >= 10) {
+                submitBtn.style.display = 'flex';
+            } else {
+                submitBtn.style.display = 'none';
+            }
+        }
+
+        // Enviar para o WhatsApp
+        function handleBooking(e) {
+            e.preventDefault();
+
+            const serviceId = document.getElementById('service-select').value;
+            const service = services.find(s => s.id == serviceId);
+            const rawDate = document.getElementById('date-select').value;
+            const time = document.getElementById('selected-time').value;
+            const name = document.getElementById('client-name').value;
+            
+            // Formatando data para DD/MM/AAAA
+            const [year, month, day] = rawDate.split('-');
+            const formattedDate = `${day}/${month}/${year}`;
+            
+            const deposit = (service.price * 0.30).toFixed(2).replace('.', ',');
+
+            const message = `Olá, Salão Atalaia! 💖\nGostaria de solicitar um agendamento:\n\n👤 *Nome:* ${name}\n💅 *Serviço:* ${service.name}\n📅 *Data:* ${formattedDate}\n⏰ *Horário:* ${time}\n\nEstou ciente da política de pré-reserva e aguardo a chave Pix para envio do sinal de *R$ ${deposit}* para confirmar meu horário.\n\nAguardo retorno, obrigada!`;
+
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodedMessage}`;
+            
+            window.open(whatsappUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
