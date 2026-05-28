@@ -116,14 +116,38 @@
             pointer-events: auto;
             z-index: 10;
         }
+
+        /* Áurea Dourada Pulsante (Substitui a bolinha verde) */
+        .aura-gold {
+            position: absolute;
+            inset: -4px;
+            border-radius: 50%;
+            border: 2px solid rgba(212, 175, 55, 0.5); /* Dourado translúcido */
+            animation: pulse-aura 2s infinite ease-in-out;
+            z-index: -1;
+        }
+
+        @keyframes pulse-aura {
+            0% {
+                transform: scale(1);
+                opacity: 0.8;
+            }
+            50% {
+                transform: scale(1.15);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 0;
+            }
+        }
     </style>
 </head>
 <body class="text-brand-900 antialiased font-sans">
 
-    <!-- Background Image com Blur (Imagem do lavatório) -->
-    <!-- PARA USAR A SUA FOTO: Depois mude este link pelo link da sua foto real -->
+    <!-- Background Image com Blur (Lavatório) -->
     <div class="fixed inset-[-20px] z-[-2]">
-        <img src="https://postimg.cc/B8K7kpF6" alt="Background Salão" class="w-full h-full object-cover blur-[6px] opacity-90">
+        <img src="https://images.unsplash.com/photo-1560066984-138dadb4c035?auto=format&fit=crop&w=1080&q=80" alt="Background Salão" class="w-full h-full object-cover blur-[6px] opacity-90">
     </div>
     <!-- Overlay rosado para garantir leitura e dar o tom da marca -->
     <div class="fixed inset-0 bg-gradient-to-br from-white/50 to-brand-300/40 z-[-1]"></div>
@@ -132,10 +156,13 @@
         
         <!-- Header / Perfil -->
         <header class="pt-10 pb-6 px-6 flex flex-col items-center border-b border-brand-200/50 bg-white/30 text-center backdrop-blur-sm">
+            
+            <!-- Foto de Perfil com a Áurea Dourada -->
             <div class="relative w-28 h-28 mb-4">
-                <img src="https://i.postimg.cc/VNGySHLj/Assunto.png" alt="Atalaia Logo" class="w-full h-full object-cover rounded-full border-4 border-brand-gold/40 shadow-md">
-                <div class="absolute bottom-0 right-0 bg-green-500 w-5 h-5 rounded-full border-2 border-white shadow" title="Online no WhatsApp"></div>
+                <div class="aura-gold"></div>
+                <img src="https://i.postimg.cc/VNGySHLj/Assunto.png" alt="Atalaia Logo" class="w-full h-full object-cover rounded-full border-4 border-brand-gold/60 shadow-md bg-white">
             </div>
+            
             <h1 class="text-2xl font-serif font-bold text-brand-900 mb-1 leading-tight">Salão de Beleza e Esmalteria Atalaia</h1>
             <p class="text-brand-600 font-medium text-sm mb-3">Cabelereiro e Estética</p>
             <div class="flex items-center text-xs text-brand-800 bg-white/60 px-3 py-1.5 rounded-full max-w-full shadow-sm border border-brand-100">
@@ -280,20 +307,35 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
-                        <span class="font-serif font-bold text-brand-900">Cabelo Loiro</span>
+                    
+                    <!-- FOTO 1: Cabelo Loiro -->
+                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md overflow-hidden relative">
+                        <img src="https://i.postimg.cc/q7WJ4d4z/Captura-de-Tela-2026-05-28-as-15-03-57.png" alt="Cabelo Loiro" class="w-full h-full object-cover absolute inset-0 z-0 opacity-100">
+                        <span class="font-serif font-bold text-brand-900 z-10 bg-white/70 px-2 py-1 rounded">Cabelo Loiro</span>
                     </div>
-                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
-                        <span class="font-serif font-bold text-brand-900">Unhas Gel</span>
+
+                    <!-- FOTO 2: Unhas Gel -->
+                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md overflow-hidden relative">
+                        <img src="https://i.postimg.cc/s2HBW8y1/IMG-0359.jpg" alt="Unhas Gel" class="w-full h-full object-cover absolute inset-0 z-0 opacity-100">
+                        <span class="font-serif font-bold text-brand-900 z-10 bg-white/70 px-2 py-1 rounded">Unhas Gel</span>
                     </div>
-                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
-                        <span class="font-serif font-bold text-brand-900">Maquiagem</span>
+
+                    <!-- FOTO 3: Maquiagem -->
+                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md overflow-hidden relative">
+                        <img src="https://i.postimg.cc/fb8zF0gc/Captura-de-Tela-2026-05-26-as-16-59-04.png" alt="Maquiagem" class="w-full h-full object-cover absolute inset-0 z-0 opacity-100">
+                        <span class="font-serif font-bold text-brand-900 z-10 bg-white/70 px-2 py-1 rounded">Maquiagem</span>
                     </div>
-                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
-                        <span class="font-serif font-bold text-brand-900">Morena Iluminada</span>
+
+                    <!-- FOTO 4: Morena Iluminada -->
+                    <div class="rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md overflow-hidden relative">
+                        <img src="https://i.postimg.cc/vZRcL9pn/IMG-0356.jpg" alt="Morena Iluminada" class="w-full h-full object-cover absolute inset-0 z-0 opacity-100">
+                        <span class="font-serif font-bold text-brand-900 z-10 bg-white/70 px-2 py-1 rounded">Morena Iluminada</span>
                     </div>
-                    <div class="col-span-2 rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center p-4 shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md">
-                        <span class="font-serif font-bold text-brand-900 text-lg">Design de Sobrancelhas</span>
+
+                    <!-- FOTO 5: Design de Sobrancelhas (Usando a imagem dos cílios conforme seu link) -->
+                    <div class="col-span-2 rounded-xl h-32 bg-white/60 backdrop-blur-sm border border-brand-gold/30 flex items-center justify-center text-center shadow-sm transition-all hover:scale-[1.02] hover:border-brand-gold/60 hover:shadow-md overflow-hidden relative">
+                        <img src="https://i.postimg.cc/hvztVPs9/Captura-de-Tela-2026-05-28-as-14-58-08.png" alt="Design de Sobrancelhas" class="w-full h-full object-cover absolute inset-0 z-0 opacity-100">
+                        <span class="font-serif font-bold text-brand-900 text-lg z-10 bg-white/70 px-2 py-1 rounded">Design de Sobrancelhas</span>
                     </div>
                 </div>
                 
